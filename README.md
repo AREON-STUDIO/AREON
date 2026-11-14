@@ -142,8 +142,7 @@ AREON/
 
 | Member | Responsibility |
 |---|---|
-| Uddipta Singha | Project Lead, coordination, scientific consistency and integration |
-| Unmesh | Unity UI development and in-game UI integration |
+| Unmesh | Lead, coordination, scientific consistency and integration, Unity UI development and in-game UI integration |
 | Sudharsan | Unity level design, environment and scene setup |
 | Dilli | Core gameplay mechanics and game logic |
 | Meghna | Web frontend development and integration support |
