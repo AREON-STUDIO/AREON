@@ -14,6 +14,7 @@ interface EducationalSectionProps {
   rows: TelemetryRow[];
   selectedSol: number;
   onInspectSol: (sol: number) => void;
+  
 }
 
 export const EducationalSection: React.FC<EducationalSectionProps> = ({
