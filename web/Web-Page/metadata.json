@@ -1,0 +1,6 @@
+{
+  "name": "AREON — Mars Telemetry Command Center",
+  "description": "A browser-based command center connecting the playable AREON Mars survival game with real NASA Curiosity Rover REMS telemetry.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
