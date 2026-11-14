@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AREON — Mars Dome Simulation</title>
+    <style>
+      :root {
+        --bg: #0b0e14;
+        --panel: #121723;
+        --border: rgba(255, 255, 255, 0.1);
+        --mars: #c89b6a;
+        --air: #6fc3e8;
+        --power: #ffd166;
+        --rad: #e06c5a;
+        --text: #f1f4f8;
+        --muted: #94a3b8;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        user-select: none;
+      }
+      .mono {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-variant-numeric: tabular-nums;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 18px;
+        border-bottom: 1px solid var(--border);
+        background: #0e131d;
+        flex-shrink: 0;
+      }
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        font-size: 13px;
+        color: var(--mars);
+        white-space: nowrap;
+      }
+      .sol-tabs {
+        display: flex;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 3px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        overflow-x: auto;
+      }
+      .sol-btn {
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 11px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 150ms ease, color 150ms ease;
+        white-space: nowrap;
+      }
+      .sol-btn.active {
+        background: var(--mars);
+        color: #0b0e14;
+      }
+      .sol-btn:hover:not(.active) {
+        color: var(--text);
+      }
+      .status-meta {
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        white-space: nowrap;
+      }
+      .main-stage {
+        position: relative;
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        min-height: 0;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .hud-sidebar {
+        background: var(--panel);
+        border-left: 1px solid var(--border);
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 12px;
+        overflow-y: auto;
+      }
+      .meter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .meter-row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .meter-head {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .meter-track {
+        height: 8px;
+        background: rgba(255, 255, 255, 0.07);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .meter-fill {
+        height: 100%;
+        border-radius: 999px;
+        transition: width 180ms ease;
+      }
+      .telemetry-box {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        background: rgba(11, 14, 20, 0.65);
+        font-size: 11.5px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .action-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 9px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 150ms ease, background 150ms ease, transform 120ms ease;
+      }
+      .action-btn:hover {
+        border-color: var(--mars);
+        background: rgba(200, 155, 106, 0.12);
+      }
+      .action-btn:active {
+        transform: scale(0.98);
+      }
+      .action-btn small {
+        display: block;
+        color: var(--muted);
+        font-weight: 400;
+        font-size: 10px;
+        margin-top: 2px;
+      }
+      .guru-btn {
+        grid-column: span 2;
+        background: rgba(200, 155, 106, 0.14);
+        border-color: rgba(200, 155, 106, 0.35);
+        color: #f6e6d4;
+        text-align: center;
+      }
+      .toast {
+        position: absolute;
+        left: 16px;
+        bottom: 16px;
+        max-width: 440px;
+        background: rgba(17, 22, 34, 0.94);
+        border: 1px solid rgba(200, 155, 106, 0.4);
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 12px;
+        line-height: 1.45;
+        color: var(--text);
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 200ms ease, transform 200ms ease;
+      }
+      .toast.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(11, 14, 20, 0.86);
+        backdrop-filter: blur(6px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 20;
+      }
+      .overlay.open {
+        display: flex;
+      }
+      .modal {
+        width: 100%;
+        max-width: 460px;
+        background: #141a28;
+        border: 1px solid rgba(200, 155, 106, 0.35);
+        border-radius: 14px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .modal h2 {
+        font-size: 17px;
+        color: var(--mars);
+      }
+      .modal p {
+        font-size: 13px;
+        line-height: 1.5;
+        color: #d6dde8;
+      }
+      .mcq-options {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .mcq-opt {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 10px 12px;
+        border-radius: 8px;
+        text-align: left;
+        font-size: 13px;
+        cursor: pointer;
+        transition: border-color 150ms ease, background 150ms ease;
+      }
+      .mcq-opt:hover {
+        border-color: var(--mars);
+        background: rgba(200, 155, 106, 0.12);
+      }
+      .primary-btn {
+        background: var(--mars);
+        color: #0b0e14;
+        border: none;
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+        align-self: flex-end;
+      }
+      @media (max-width: 720px) {
+        .main-stage {
+          grid-template-columns: 1fr;
+          grid-template-rows: 1fr auto;
+        }
+        .hud-sidebar {
+          border-left: none;
+          border-top: 1px solid var(--border);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">AREON HABITAT SIM</div>
+      <div class="sol-tabs" id="solTabs"></div>
+      <div class="status-meta mono">
+        <span id="clockReadout">SOL TIME: 00:45</span>
+        <span>·</span>
+        <span id="scienceReadout">DATA: 0%</span>
+      </div>
+    </header>
+
+    <div class="main-stage">
+      <div style="position: relative; min-height: 0">
+        <canvas id="domeCanvas"></canvas>
+        <div id="toast" class="toast"></div>
+      </div>
+
+      <aside class="hud-sidebar">
+        <div class="meter-group">
+          <div class="telemetry-box mono" id="csvStatusBox">
+            <div style="color: var(--mars); font-weight: 700">LIVE CSV TELEMETRY</div>
+            <div id="telemetryLine">Loading /data.csv...</div>
+            <div id="physicsLine">Irradiance: -- W/m² · Dose: -- mSv/d</div>
+            <div id="triggerLine">Trigger: evaluating...</div>
+          </div>
+
+          <div class="meter-row">
+            <div class="meter-head">
+              <span style="color: var(--air)">Air (O₂ Dome)</span>
+              <span class="mono" id="airVal">100%</span>
+            </div>
+            <div class="meter-track">
+              <div class="meter-fill" id="airBar" style="width: 100%; background: var(--air)"></div>
+            </div>
+          </div>
+
+          <div class="meter-row">
+            <div class="meter-head">
+              <span style="color: var(--power)">Power (Solar Array)</span>
+              <span class="mono" id="powerVal">100%</span>
+            </div>
+            <div class="meter-track">
+              <div class="meter-fill" id="powerBar" style="width: 100%; background: var(--power)"></div>
+            </div>
+          </div>
+
+          <div class="meter-row">
+            <div class="meter-head">
+              <span style="color: var(--rad)">Shield Integrity</span>
+              <span class="mono" id="shieldVal">100%</span>
+            </div>
+            <div class="meter-track">
+              <div class="meter-fill" id="shieldBar" style="width: 100%; background: var(--rad)"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="action-btn" id="btnClean">
+            Clean Panels
+            <small>Clear dust (+Power)</small>
+          </button>
+          <button class="action-btn" id="btnPatch">
+            Patch Shield
+            <small>Regolith + Ice (+Shield)</small>
+          </button>
+          <button class="action-btn" id="btnScrubber">
+            Cycle O₂ Scrubber
+            <small>Costs 8% Power (+Air)</small>
+          </button>
+          <button class="action-btn" id="btnCollect">
+            Collect Data
+            <small>Scan REMS (+Science)</small>
+          </button>
+          <button class="action-btn guru-btn" id="btnGuru">
+            Ask AstroGuru for a Hint
+          </button>
+        </div>
+      </aside>
+
+      <div class="overlay" id="mcqOverlay">
+        <div class="modal">
+          <h2 id="modalTitle">Auto-Rescue Activated — No Game Over</h2>
+          <p id="modalBody"></p>
+          <div class="mcq-options" id="mcqOptions"></div>
+          <p id="mcqFeedback" style="display: none; color: #ffd166"></p>
+          <button class="primary-btn" id="modalClose" style="display: none">Resume Mission</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const FALLBACK_CSV = "day,sol,pressure_pa,flare_class\n1,800,887.38,none\n2,852,924.20,C\n3,2085,772.22,X";
+
+      let rows = [];
+      let currentRow = null;
+      let air = 100;
+      let power = 100;
+      let shield = 100;
+      let dustOnPanels = 10;
+      let science = 0;
+      let timeLeft = 45;
+      let paused = false;
+      let rescues = 0;
+      let fanAngle = 0;
+
+      const mcqs = [
+        {
+          q: "Even with spotless solar panels, why does power drop during a low-pressure dust storm like Sol 2085?",
+          opts: [
+            "Suspended Martian dust blocks sunlight (irradiance drops)",
+            "Solar panels freeze completely when pressure falls",
+            "Mars spins faster during storms"
+          ],
+          correct: 0,
+          explain: "Correct! Airborne dust scatters sunlight before it reaches the panels—irradiance matters even on clean panels."
+        },
+        {
+          q: "On Sol 852, air pressure is high (924.20 Pa), yet a storm alert triggers. Why?",
+          opts: [
+            "A C-class solar flare causes an invisible radiation hazard",
+            "High pressure crushes the dome glass",
+            "Water ice turns into dust"
+          ],
+          correct: 0,
+          explain: "Right! Our trigger checks BOTH atmospheric dust (Pressure < 800 Pa) AND solar radiation (Flare != none)."
+        },
+        {
+          q: "What real materials protect the AREON Mars dome from solar flare radiation?",
+          opts: [
+            "Compacted regolith soil and water ice mass",
+            "Invisible force fields",
+            "Extra coats of yellow paint"
+          ],
+          correct: 0,
+          explain: "Spot on! Real habitats rely on mass—regolith and hydrogen-rich water ice—to absorb energetic particles."
+        }
+      ];
+
+      function parseCsv(text) {
+        const lines = text.trim().split(/\r?\n/).filter(Boolean);
+        const headers = lines[0].split(",").map((h) => h.trim());
+        return lines.slice(1).map((line) => {
+          const cols = line.split(",").map((c) => c.trim());
+          return {
+            day: Number(cols[headers.indexOf("day")]),
+            sol: Number(cols[headers.indexOf("sol")]),
+            pressure_pa: Number(cols[headers.indexOf("pressure_pa")]),
+            flare_class: cols[headers.indexOf("flare_class")] || "none"
+          };
+        });
+      }
+
+      function evaluateTrigger(row) {
+        const lowPressure = row.pressure_pa < 800;
+        const hasFlare = row.flare_class.toLowerCase() !== "none";
+        const deficit = Math.max(0, 820 - row.pressure_pa);
+        const tau = 0.45 + (lowPressure ? 1.85 + deficit * 0.015 : deficit * 0.004);
+        const irradiance = 590 * Math.exp(-0.42 * tau * (1 / 0.819));
+        const f = row.flare_class.toUpperCase();
+        const dose = f === "X" ? 42.5 : f === "M" ? 14.2 : f === "C" ? 3.85 : 0.67;
+        return {
+          lowPressure,
+          hasFlare,
+          active: lowPressure || hasFlare,
+          irradiance: irradiance.toFixed(1),
+          dose: dose.toFixed(2)
+        };
+      }
+
+      function showToast(msg) {
+        const el = document.getElementById("toast");
+        el.textContent = msg;
+        el.classList.add("visible");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => el.classList.remove("visible"), 3400);
+      }
+
+      function renderSolTabs() {
+        const tabs = document.getElementById("solTabs");
+        tabs.innerHTML = "";
+        rows.forEach((r) => {
+          const btn = document.createElement("button");
+          btn.className = "sol-btn" + (currentRow && currentRow.sol === r.sol ? " active" : "");
+          btn.dataset.sol = String(r.sol);
+          btn.textContent = "Sol " + r.sol;
+          btn.onclick = () => selectSol(r.sol);
+          tabs.appendChild(btn);
+        });
+      }
+
+      function selectSol(solNumber) {
+        const found = rows.find((r) => r.sol === solNumber) || rows[0];
+        if (!found) return;
+        currentRow = found;
+        air = 100;
+        power = 100;
+        shield = 100;
+        dustOnPanels = found.pressure_pa < 800 ? 40 : 12;
+        science = 0;
+        timeLeft = 45;
+        paused = false;
+        document.getElementById("mcqOverlay").classList.remove("open");
+
+        document.querySelectorAll(".sol-btn").forEach((btn) => {
+          btn.classList.toggle("active", Number(btn.dataset.sol) === found.sol);
+        });
+
+        const trig = evaluateTrigger(found);
+        document.getElementById("telemetryLine").textContent =
+          "Sol " + found.sol + " · " + found.pressure_pa.toFixed(2) + " Pa · Flare: " + found.flare_class;
+        document.getElementById("physicsLine").textContent =
+          "Sky: " + trig.irradiance + " W/m² · Flux: " + trig.dose + " mSv/d";
+        document.getElementById("triggerLine").textContent =
+          "Trigger: " + (trig.active ? "TRUE (Storm Active)" : "FALSE (Clear Skies)");
+        document.getElementById("triggerLine").style.color = trig.active ? "#e06c5a" : "#6fc3e8";
+
+        showToast("Loaded Sol " + found.sol + " from live CSV telemetry.");
+        updateHud();
+      }
+
+      function updateHud() {
+        document.getElementById("airVal").textContent = Math.round(air) + "%";
+        document.getElementById("powerVal").textContent = Math.round(power) + "%";
+        document.getElementById("shieldVal").textContent = Math.round(shield) + "%";
+        document.getElementById("airBar").style.width = Math.max(0, air) + "%";
+        document.getElementById("powerBar").style.width = Math.max(0, power) + "%";
+        document.getElementById("shieldBar").style.width = Math.max(0, shield) + "%";
+        document.getElementById("clockReadout").textContent = "SOL TIME: 00:" + String(Math.max(0, Math.ceil(timeLeft))).padStart(2, "0");
+        document.getElementById("scienceReadout").textContent = "DATA: " + Math.min(100, Math.round(science)) + "%";
+      }
+
+      function openRescueOrSuccess(isWin) {
+        paused = true;
+        const overlay = document.getElementById("mcqOverlay");
+        const title = document.getElementById("modalTitle");
+        const body = document.getElementById("modalBody");
+        const optsEl = document.getElementById("mcqOptions");
+        const feedback = document.getElementById("mcqFeedback");
+        const closeBtn = document.getElementById("modalClose");
+
+        optsEl.innerHTML = "";
+        feedback.style.display = "none";
+        closeBtn.style.display = "none";
+
+        if (isWin) {
+          title.textContent = "Sol " + currentRow.sol + " Completed";
+          body.textContent =
+            "Great teamwork! You collected " +
+            Math.round(science) +
+            "% REMS science telemetry with " +
+            rescues +
+            " gentle auto-rescue(s). Ready to try another Sol?";
+          closeBtn.textContent = "Replay Sol " + currentRow.sol;
+          closeBtn.style.display = "inline-block";
+          closeBtn.onclick = () => selectSol(currentRow.sol);
+          overlay.classList.add("open");
+          return;
+        }
+
+        rescues += 1;
+        const item = mcqs[(rescues - 1) % mcqs.length];
+        title.textContent = "Gentle Auto-Rescue — No Game Over";
+        body.textContent =
+          "Your rescue drone safely stabilized the habitat! Answer this quick science check to recharge your dome:";
+
+        const qPara = document.createElement("p");
+        qPara.style.fontWeight = "600";
+        qPara.style.color = "#f1f4f8";
+        qPara.textContent = item.q;
+        optsEl.appendChild(qPara);
+
+        item.opts.forEach((optText, idx) => {
+          const b = document.createElement("button");
+          b.className = "mcq-opt";
+          b.textContent = optText;
+          b.onclick = () => {
+            feedback.style.display = "block";
+            if (idx === item.correct) {
+              feedback.style.color = "#6fc3e8";
+              feedback.textContent = item.explain;
+              air = Math.max(air, 78);
+              power = Math.max(power, 78);
+              shield = Math.max(shield, 78);
+              closeBtn.textContent = "Resume Mission (+Boost)";
+              closeBtn.style.display = "inline-block";
+            } else {
+              feedback.style.color = "#ffd166";
+              feedback.textContent =
+                "Good guess—wrong answers only teach here! Hint: " + item.explain;
+              air = Math.max(air, 62);
+              power = Math.max(power, 62);
+              shield = Math.max(shield, 62);
+              closeBtn.textContent = "Continue Safely";
+              closeBtn.style.display = "inline-block";
+            }
+          };
+          optsEl.appendChild(b);
+        });
+
+        closeBtn.onclick = () => {
+          overlay.classList.remove("open");
+          paused = false;
+          updateHud();
+        };
+
+        overlay.classList.add("open");
+      }
+
+      document.getElementById("btnClean").onclick = () => {
+        if (paused) return;
+        dustOnPanels = Math.max(0, dustOnPanels - 35);
+        power = Math.min(100, power + 18);
+        showToast(
+          currentRow.pressure_pa < 800
+            ? "Panels brushed! Note: dust in the dark sky still limits peak solar irradiance."
+            : "Solar array brushed clean! Power generation boosted."
+        );
+        updateHud();
+      };
+
+      document.getElementById("btnPatch").onclick = () => {
+        if (paused) return;
+        shield = Math.min(100, shield + 22);
+        power = Math.max(0, power - 4);
+        showToast("Applied compacted regolith & water ice patch to habitat dome.");
+        updateHud();
+      };
+
+      document.getElementById("btnScrubber").onclick = () => {
+        if (paused) return;
+        if (power < 8) {
+          showToast("Power is low—clean solar panels first so the O₂ scrubber can run!");
+          return;
+        }
+        power = Math.max(0, power - 8);
+        air = Math.min(100, air + 24);
+        showToast("O₂ scrubber cycled. Dome air pressure stabilized.");
+        updateHud();
+      };
+
+      document.getElementById("btnCollect").onclick = () => {
+        if (paused) return;
+        if (power < 5) {
+          showToast("Need at least 5% power to transmit REMS telemetry.");
+          return;
+        }
+        power = Math.max(0, power - 5);
+        science = Math.min(100, science + 20);
+        showToast("Science packet logged! (" + Math.round(science) + "% complete)");
+        updateHud();
+      };
+
+      document.getElementById("btnGuru").onclick = () => {
+        if (!currentRow) return;
+        const trig = evaluateTrigger(currentRow);
+        if (currentRow.flare_class !== "none" && currentRow.pressure_pa < 800) {
+          showToast("AstroGuru: Both dust AND a " + currentRow.flare_class + "-class flare are active! Keep shield patched with regolith + ice while brushing panels.");
+        } else if (trig.hasFlare) {
+          showToast("AstroGuru: Skies look bright, but a " + currentRow.flare_class + "-class flare is hitting! Watch your Shield meter.");
+        } else {
+          showToast("AstroGuru: Clear skies on Sol " + currentRow.sol + "! Practice cycling the O₂ scrubber and collecting REMS data.");
+        }
+      };
+
+      // Mars Dome Cutaway & Atmospheric Physics Canvas Renderer
+      const canvas = document.getElementById("domeCanvas");
+      const ctx = canvas.getContext("2d");
+      const motes = Array.from({ length: 54 }, (_, i) => ({
+        x: (i * 73) % 1000,
+        y: (i * 137) % 600,
+        r: 1.1 + (i % 3) * 0.8,
+        vx: 0.22 + (i % 5) * 0.09,
+        vy: -0.05 + (i % 3) * 0.04
+      }));
+
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = Math.max(320, Math.floor(rect.width * window.devicePixelRatio));
+        canvas.height = Math.max(200, Math.floor(rect.height * window.devicePixelRatio));
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      let lastTs = performance.now();
+      function loop(now) {
+        const dt = Math.min(0.1, (now - lastTs) / 1000);
+        lastTs = now;
+        fanAngle += dt * (air > 30 ? 3.5 : 1.2);
+
+        if (!paused && currentRow) {
+          const trig = evaluateTrigger(currentRow);
+          const dustFactor = trig.lowPressure ? 1.9 : 0.4;
+          const flareFactor =
+            currentRow.flare_class === "X"
+              ? 5.8
+              : currentRow.flare_class === "M"
+                ? 4.3
+                : currentRow.flare_class === "C"
+                  ? 3.1
+                  : 0.4;
+
+          dustOnPanels = Math.min(100, dustOnPanels + dustFactor * dt * 2.1);
+          const irradiance = trig.lowPressure ? 0.52 : 1.0;
+          const panelGain = Math.max(0, (1 - dustOnPanels / 115) * irradiance * 3.8);
+          const drain = 3.2;
+
+          power = Math.max(0, Math.min(100, power + (panelGain - drain) * dt));
+          air = Math.max(0, air - (power < 15 ? 4.4 : 2.1) * dt);
+          shield = Math.max(0, shield - flareFactor * dt);
+          timeLeft -= dt;
+
+          if (air <= 0 || shield <= 0) {
+            openRescueOrSuccess(false);
+          } else if (timeLeft <= 0) {
+            openRescueOrSuccess(true);
+          }
+          updateHud();
+        }
+
+        const w = canvas.width;
+        const h = canvas.height;
+        const trig = currentRow ? evaluateTrigger(currentRow) : { lowPressure: false, hasFlare: false };
+
+        // Martian sky gradient
+        const sky = ctx.createLinearGradient(0, 0, 0, h);
+        if (trig.lowPressure) {
+          sky.addColorStop(0, "#100c12");
+          sky.addColorStop(0.65, "#2e1b15");
+          sky.addColorStop(1, "#45281c");
+        } else {
+          sky.addColorStop(0, "#0b0e14");
+          sky.addColorStop(0.6, "#1f1821");
+          sky.addColorStop(1, "#4a2e1f");
+        }
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, w, h);
+
+        // Distant craters & mountain ridges
+        ctx.fillStyle = "#2b1b15";
+        ctx.beginPath();
+        ctx.moveTo(0, h * 0.72);
+        ctx.lineTo(w * 0.25, h * 0.64);
+        ctx.lineTo(w * 0.55, h * 0.69);
+        ctx.lineTo(w * 0.82, h * 0.61);
+        ctx.lineTo(w, h * 0.67);
+        ctx.lineTo(w, h);
+        ctx.lineTo(0, h);
+        ctx.closePath();
+        ctx.fill();
+
+        // Energetic solar flare particle streaks when Flare != none
+        if (trig.hasFlare) {
+          const pulse = 0.14 + Math.sin(now * 0.0025) * 0.05;
+          ctx.fillStyle = `rgba(224, 108, 90, ${pulse})`;
+          ctx.fillRect(0, 0, w, h * 0.45);
+
+          ctx.strokeStyle = "rgba(224, 108, 90, 0.35)";
+          ctx.lineWidth = 1.5;
+          for (let s = 0; s < 5; s++) {
+            const sx = ((now * 0.14 + s * 170) % (w + 120)) - 60;
+            ctx.beginPath();
+            ctx.moveTo(sx, 12 + s * 24);
+            ctx.lineTo(sx - 34, 42 + s * 24);
+            ctx.stroke();
+          }
+        }
+
+        // Geodesic Mars Dome with regolith + water ice shielding aura
+        const cx = w * 0.48;
+        const cy = h * 0.78;
+        const radius = Math.min(w * 0.34, h * 0.46);
+
+        const domeGlow = ctx.createRadialGradient(cx, cy - radius * 0.25, radius * 0.1, cx, cy, radius);
+        domeGlow.addColorStop(0, "rgba(200, 155, 106, 0.32)");
+        domeGlow.addColorStop(0.7, "rgba(111, 195, 232, 0.12)");
+        domeGlow.addColorStop(1, "rgba(11, 14, 20, 0.75)");
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, Math.PI, 0);
+        ctx.closePath();
+        ctx.fillStyle = domeGlow;
+        ctx.fill();
+
+        // Shield integrity thickness ring
+        ctx.lineWidth = 2 + (shield / 100) * 4;
+        ctx.strokeStyle = trig.hasFlare ? "#e06c5a" : "#c89b6a";
+        ctx.stroke();
+
+        // Geodesic struts
+        ctx.strokeStyle = "rgba(255,255,255,0.12)";
+        ctx.lineWidth = 1;
+        for (let a = 1; a <= 4; a++) {
+          const ang = Math.PI + (Math.PI * a) / 5;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(cx + Math.cos(ang) * radius, cy + Math.sin(ang) * radius);
+          ctx.stroke();
+        }
+
+        // Interior Hydroponics Bay (left inside dome)
+        ctx.fillStyle = "rgba(111, 195, 232, 0.25)";
+        ctx.fillRect(cx - radius * 0.52, cy - 22, radius * 0.42, 22);
+        ctx.strokeStyle = "rgba(111, 195, 232, 0.55)";
+        ctx.strokeRect(cx - radius * 0.52, cy - 22, radius * 0.42, 22);
+
+        // Interior O2 Scrubber Turbine (right inside dome)
+        const tx = cx + radius * 0.32;
+        const ty = cy - 20;
+        ctx.beginPath();
+        ctx.arc(tx, ty, 14, 0, Math.PI * 2);
+        ctx.fillStyle = "#162032";
+        ctx.fill();
+        ctx.strokeStyle = "#6fc3e8";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        for (let b = 0; b < 3; b++) {
+          const ang = fanAngle + (b * Math.PI * 2) / 3;
+          ctx.beginPath();
+          ctx.moveTo(tx, ty);
+          ctx.lineTo(tx + Math.cos(ang) * 10, ty + Math.sin(ang) * 10);
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        // External Solar Array beside dome
+        const sx = cx + radius * 0.96;
+        const sy = cy - 16;
+        ctx.fillStyle = "#182334";
+        ctx.strokeStyle = "#ffd166";
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(sx, sy - 30, 76, 30);
+        ctx.strokeRect(sx, sy - 30, 76, 30);
+        ctx.fillStyle = `rgba(200, 155, 106, ${Math.min(0.85, dustOnPanels / 110)})`;
+        ctx.fillRect(sx, sy - 30, 76, 30);
+
+        // Dome base floor
+        ctx.fillStyle = "#141923";
+        ctx.fillRect(0, cy, w, h - cy);
+
+        // Floating dust motes / wind streaks
+        ctx.fillStyle = trig.lowPressure ? "rgba(200, 155, 106, 0.55)" : "rgba(255, 224, 185, 0.35)";
+        const speedMult = trig.lowPressure ? 3.4 : 1.0;
+        for (const m of motes) {
+          m.x = (m.x + m.vx * speedMult) % 1000;
+          m.y = (m.y + m.vy + 600) % 600;
+          ctx.beginPath();
+          ctx.arc((m.x / 1000) * w, (m.y / 600) * h, m.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        requestAnimationFrame(loop);
+      }
+
+      async function boot() {
+        try {
+          const res = await fetch("/data.csv", { cache: "no-store" });
+          const text = res.ok ? await res.text() : FALLBACK_CSV;
+          rows = parseCsv(text);
+        } catch {
+          rows = parseCsv(FALLBACK_CSV);
+        }
+
+        renderSolTabs();
+        if (rows.length > 0) {
+          selectSol(rows[0].sol);
+        }
+        requestAnimationFrame(loop);
+      }
+
+      window.addEventListener("message", (event) => {
+        if (!event.data) return;
+        if (event.data.type === "SELECT_SOL" && typeof event.data.sol === "number") {
+          selectSol(event.data.sol);
+        }
+        if (event.data.type === "SYNC_CSV_ROWS" && Array.isArray(event.data.rows) && event.data.rows.length > 0) {
+          rows = event.data.rows.map((r) => ({
+            day: Number(r.day),
+            sol: Number(r.sol),
+            pressure_pa: Number(r.pressurePa ?? r.pressure_pa),
+            flare_class: String(r.flareClass ?? r.flare_class ?? "none")
+          }));
+          renderSolTabs();
+          const targetSol = typeof event.data.selectedSol === "number" ? event.data.selectedSol : rows[0].sol;
+          selectSol(targetSol);
+        }
+      });
+
+      boot();
+    </script>
+  </body>
+</html>
