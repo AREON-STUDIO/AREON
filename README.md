@@ -13,9 +13,9 @@ Players explore the Martian environment, collect scientific data, manage limited
 | Resource | Link |
 |---|---|
 | 🌍 Live Website | [Visit AREON](https://areon.vercel.app/) |
-| 🎬 Project Demonstration | [Watch 30-Second Demo](YOUR_YOUTUBE_URL) |
+| 🎬 Project Demonstration | [Watch 30-Second Demo](https://www.youtube.com/watch?v=ZJ3HIq-YT-Q) |
 | 💻 GitHub Repository | [AREON Studio](https://github.com/AREON-STUDIO/AREON) |
-| 🎮 Unity Game | [Download / Play Game](YOUR_GAME_BUILD_URL) |
+| 🎮 Unity Game | [Download / Play Game](sha256:83f23e75af075abb474cc4420b290f92ff2d0b769f63cbd8575ab05fc25c3470) |
 
 ---
 
