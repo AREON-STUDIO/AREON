@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b28075603e675d6409f10fa05782cffd, type: 3}
+  m_Name: Sol800_Orientation
+  m_EditorClassIdentifier: Assembly-CSharp::MissionScenarioData
+  solNumber: 800
+  displayName: Orientation Sol
+  pressurePa: 887
+  solarFlareClass: 0
+  stormStatus: 0
+  initialOxygen: 88
+  initialPower: 64
+  initialShield: 72
+  oxygenDrainPerSecond: 0.5
+  oxygenDrainMultiplier: 1
+  shieldDrainPerSecond: 0.4
+  shieldDrainMultiplier: 1
+  scienceDownloadPowerCost: 15
+  shieldReinforcePowerCost: 10
+  shieldRestoreAmount: 25
+  daylightDurationSeconds: 300
+  solarRechargePerSecond: 2
+  solarChargingAllowed: 1
+  missionDurationSeconds: 180
+  completionPolicy: 0
+  failIfObjectivesIncompleteAtTimeout: 0
+  failAtZeroOxygen: 1
+  failAtZeroShield: 0
+  requiredObjectives:
+  - id: s800_visit_base_dome
+    title: Visit Base Dome
+    description: Walk to the Base Dome and interact with it.
+    trigger: 0
+    triggerKey: BaseDome
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s800_visit_research_center
+    title: Visit Research Center
+    description: Interact with the Research Center terminal.
+    trigger: 0
+    triggerKey: ResearchCenter
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s800_visit_power_generator
+    title: Visit Power Generator
+    description: Interact with the Power Generator.
+    trigger: 0
+    triggerKey: PowerGenerator
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s800_resource_monitoring
+    title: Monitor Resource Levels
+    description: Read the Oxygen, Power and Shield bars, then press ACKNOWLEDGE (R).
+    trigger: 1
+    triggerKey: ResourceMonitoring
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s800_recharge_power
+    title: Recharge Power
+    description: Charge Power at the generator during daylight (10 Power).
+    trigger: 2
+    triggerKey: 
+    targetAmount: 10
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s800_first_science_upload
+    title: Download Science Telemetry
+    description: Spend 15 Power to download your first science packet.
+    trigger: 3
+    triggerKey: 
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0
+  optionalObjectives:
+  - id: s800_reinforce_shield
+    title: Reinforce the Shield
+    description: 'Optional: spend 10 Power at the Base Dome shield console.'
+    trigger: 4
+    triggerKey: 
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0

@@ -1,0 +1,424 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &344225343821679954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8189946454353593025}
+  - component: {fileID: 5096698913189875248}
+  m_Layer: 0
+  m_Name: ObjectiveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8189946454353593025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344225343821679954}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1703822689585115023}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5096698913189875248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344225343821679954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05a5d4b27bd94614cae151eeefa40a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AREON.Missions.ObjectiveManager
+  gameplayEvents: {fileID: 1122636247339190083}
+--- !u!1 &3340552317640959372
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8686982383484993594}
+  - component: {fileID: 1122636247339190083}
+  m_Layer: 0
+  m_Name: MissionGameplayAdapter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8686982383484993594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340552317640959372}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1703822689585115023}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1122636247339190083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3340552317640959372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6fd77ebd84fbc43ab748ed7bb77c08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AREON.Missions.MissionGameplayAdapter
+  resourceManager: {fileID: 0}
+  weatherManager: {fileID: 0}
+  daylightManager: {fileID: 0}
+  solarPermission: {fileID: 0}
+  facilities:
+  - facilityId: BaseDome
+    station: {fileID: 0}
+  - facilityId: ResearchCenter
+    station: {fileID: 0}
+  - facilityId: PowerGenerator
+    station: {fileID: 0}
+  solarGenerator: {fileID: 0}
+  scienceDownload: {fileID: 0}
+  shieldReinforcement: {fileID: 0}
+--- !u!1 &3981907995712312393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 631109652410949832}
+  - component: {fileID: 3820967169345375632}
+  - component: {fileID: 8263545857396927889}
+  m_Layer: 0
+  m_Name: MissionFlow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &631109652410949832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3981907995712312393}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1703822689585115023}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3820967169345375632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3981907995712312393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55b83fe8f5c10cd4d8470592792e77d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AREON.Missions.MissionResetCoordinator
+  resettables:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &8263545857396927889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3981907995712312393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e451844016d0a3a419d1ef2cb2725696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AREON.Missions.MissionFlowBridge
+  missionManager: {fileID: 975739520368209176}
+  objectiveManager: {fileID: 5096698913189875248}
+  resourceManager: {fileID: 0}
+  daylightManager: {fileID: 0}
+  solarGenerator: {fileID: 0}
+  scienceTerminal: {fileID: 0}
+  shieldConsole: {fileID: 0}
+  weatherManager: {fileID: 0}
+  resetCoordinator: {fileID: 3820967169345375632}
+  restoreTimeScaleOnReset: 1
+--- !u!1 &4762389383774536736
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1385164108966946802}
+  - component: {fileID: 8595509011578921770}
+  m_Layer: 0
+  m_Name: TelemetryManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1385164108966946802
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4762389383774536736}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1703822689585115023}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8595509011578921770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4762389383774536736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b28f88e1a6d2a24ba6ff4cd80bc0348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AREON.Missions.TelemetryManager
+  knownScenarios:
+  - {fileID: 11400000, guid: 2fbba1a12a960be4e9861cba637c2474, type: 2}
+  - {fileID: 11400000, guid: 1e5913a6299ba0d4abfd0650da308e47, type: 2}
+  - {fileID: 11400000, guid: aeef53d45f3e72047ad926657dd714bf, type: 2}
+  disclosureText: CURATED HISTORICAL TRAINING DATA.\nNOT LIVE TELEMETRY.
+  referencePressurePa: 800
+--- !u!1 &6063533916784330401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3153443054709936332}
+  - component: {fileID: 6649971560685217600}
+  m_Layer: 0
+  m_Name: Stage10TestHarness
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3153443054709936332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6063533916784330401}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1703822689585115023}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6649971560685217600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6063533916784330401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a94335779082be149ad3c35ebc2ea028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AREON.Missions.Stage10TestHarness
+  bridge: {fileID: 8263545857396927889}
+  resultsView: {fileID: 0}
+  selectionView: {fileID: 0}
+  sol800: {fileID: 11400000, guid: 2fbba1a12a960be4e9861cba637c2474, type: 2}
+  sol852: {fileID: 11400000, guid: 1e5913a6299ba0d4abfd0650da308e47, type: 2}
+  sol2085: {fileID: 11400000, guid: aeef53d45f3e72047ad926657dd714bf, type: 2}
+  testTimeScale: 1
+  runOnStart: 0
+--- !u!1 &7009059519513340444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1141065265709973407}
+  - component: {fileID: 888079609477801327}
+  m_Layer: 0
+  m_Name: MissionTestHarness
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1141065265709973407
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7009059519513340444}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1703822689585115023}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &888079609477801327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7009059519513340444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5256b0374f26d546b6d11247e14549c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AREON.Missions.MissionTestHarness
+  mission: {fileID: 975739520368209176}
+  objectives: {fileID: 5096698913189875248}
+  telemetry: {fileID: 8595509011578921770}
+  gameplay: {fileID: 1122636247339190083}
+  sol800: {fileID: 11400000, guid: 2fbba1a12a960be4e9861cba637c2474, type: 2}
+  sol852: {fileID: 11400000, guid: 1e5913a6299ba0d4abfd0650da308e47, type: 2}
+  sol2085: {fileID: 11400000, guid: aeef53d45f3e72047ad926657dd714bf, type: 2}
+  showOnGui: 1
+--- !u!1 &7605867650637833568
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1737595892502303640}
+  - component: {fileID: 975739520368209176}
+  m_Layer: 0
+  m_Name: MissionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1737595892502303640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7605867650637833568}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1703822689585115023}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &975739520368209176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7605867650637833568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91d98f90903cbd74ebd17319d4c96fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AREON.Missions.MissionManager
+  gameplay: {fileID: 1122636247339190083}
+  objectives: {fileID: 5096698913189875248}
+  telemetry: {fileID: 8595509011578921770}
+  availableScenarios:
+  - {fileID: 11400000, guid: 2fbba1a12a960be4e9861cba637c2474, type: 2}
+  - {fileID: 11400000, guid: 1e5913a6299ba0d4abfd0650da308e47, type: 2}
+  - {fileID: 11400000, guid: aeef53d45f3e72047ad926657dd714bf, type: 2}
+  autoStartScenario: {fileID: 0}
+  gateSimulationByMissionState: 1
+  logRejections: 1
+--- !u!1 &8968285760138322495
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1703822689585115023}
+  m_Layer: 0
+  m_Name: MissionSystems
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1703822689585115023
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8968285760138322495}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8686982383484993594}
+  - {fileID: 8189946454353593025}
+  - {fileID: 1385164108966946802}
+  - {fileID: 1737595892502303640}
+  - {fileID: 1141065265709973407}
+  - {fileID: 631109652410949832}
+  - {fileID: 3153443054709936332}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

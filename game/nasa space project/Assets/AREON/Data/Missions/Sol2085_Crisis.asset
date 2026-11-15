@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b28075603e675d6409f10fa05782cffd, type: 3}
+  m_Name: Sol2085_Crisis
+  m_EditorClassIdentifier: Assembly-CSharp::MissionScenarioData
+  solNumber: 2085
+  displayName: Crisis Sol
+  pressurePa: 772
+  solarFlareClass: 2
+  stormStatus: 2
+  initialOxygen: 88
+  initialPower: 64
+  initialShield: 72
+  oxygenDrainPerSecond: 0.5
+  oxygenDrainMultiplier: 1.5
+  shieldDrainPerSecond: 0.4
+  shieldDrainMultiplier: 2
+  scienceDownloadPowerCost: 15
+  shieldReinforcePowerCost: 10
+  shieldRestoreAmount: 25
+  daylightDurationSeconds: 300
+  solarRechargePerSecond: 2
+  solarChargingAllowed: 0
+  missionDurationSeconds: 240
+  completionPolicy: 0
+  failIfObjectivesIncompleteAtTimeout: 1
+  failAtZeroOxygen: 1
+  failAtZeroShield: 1
+  requiredObjectives:
+  - id: s2085_reinforce_shield
+    title: Reinforce the Shield
+    description: 'Solar charging is offline. Spend Power wisely: reinforce the Shield
+      once.'
+    trigger: 4
+    triggerKey: 
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s2085_power_reserve
+    title: Keep Power Above 10%
+    description: Do not let Power drop below 10% during the mission.
+    trigger: 5
+    triggerKey: 
+    targetAmount: 0
+    resourceType: 1
+    resourceThreshold: 10
+  - id: s2085_survive
+    title: Survive the Global Storm
+    description: Stay alive until the mission timer ends.
+    trigger: 6
+    triggerKey: 
+    targetAmount: 0
+    resourceType: 1
+    resourceThreshold: 0
+  optionalObjectives:
+  - id: s2085_science_upload
+    title: Download Science Telemetry
+    description: 'Optional: spend 15 Power on a science packet.'
+    trigger: 3
+    triggerKey: 
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s2085_reinforce_twice
+    title: Reinforce the Shield Twice
+    description: 'Optional: reinforce the Shield two times.'
+    trigger: 4
+    triggerKey: 
+    targetAmount: 2
+    resourceType: 1
+    resourceThreshold: 0

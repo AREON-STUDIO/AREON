@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b28075603e675d6409f10fa05782cffd, type: 3}
+  m_Name: Sol852_Onset
+  m_EditorClassIdentifier: Assembly-CSharp::MissionScenarioData
+  solNumber: 852
+  displayName: Onset Sol
+  pressurePa: 924
+  solarFlareClass: 1
+  stormStatus: 1
+  initialOxygen: 88
+  initialPower: 64
+  initialShield: 72
+  oxygenDrainPerSecond: 0.5
+  oxygenDrainMultiplier: 1
+  shieldDrainPerSecond: 0.4
+  shieldDrainMultiplier: 2
+  scienceDownloadPowerCost: 15
+  shieldReinforcePowerCost: 10
+  shieldRestoreAmount: 25
+  daylightDurationSeconds: 300
+  solarRechargePerSecond: 2
+  solarChargingAllowed: 1
+  missionDurationSeconds: 240
+  completionPolicy: 0
+  failIfObjectivesIncompleteAtTimeout: 1
+  failAtZeroOxygen: 1
+  failAtZeroShield: 1
+  requiredObjectives:
+  - id: s852_reinforce_shield
+    title: Reinforce the Shield
+    description: Shield drains 2x faster. Reinforce it once (10 Power).
+    trigger: 4
+    triggerKey: 
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s852_recharge_power
+    title: Recharge Power
+    description: Restore 20 Power at the generator before daylight ends.
+    trigger: 2
+    triggerKey: 
+    targetAmount: 20
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s852_hold_shield
+    title: Keep Shield Above 20%
+    description: Keep the Shield at or above 20% for the whole mission.
+    trigger: 5
+    triggerKey: 
+    targetAmount: 0
+    resourceType: 2
+    resourceThreshold: 20
+  - id: s852_survive
+    title: Survive the Storm
+    description: Stay alive until the mission timer ends.
+    trigger: 6
+    triggerKey: 
+    targetAmount: 0
+    resourceType: 1
+    resourceThreshold: 0
+  optionalObjectives:
+  - id: s852_science_upload
+    title: Download Science Telemetry
+    description: 'Optional: spend 15 Power on a science packet.'
+    trigger: 3
+    triggerKey: 
+    targetAmount: 1
+    resourceType: 1
+    resourceThreshold: 0
+  - id: s852_power_reserve
+    title: Keep Power Above 15%
+    description: 'Optional: never let Power fall below 15% during the mission.'
+    trigger: 5
+    triggerKey: 
+    targetAmount: 0
+    resourceType: 1
+    resourceThreshold: 15
