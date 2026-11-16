@@ -6,11 +6,7 @@ import { MissionControlSection } from './components/MissionControlSection';
 import { EducationalSection } from './components/EducationalSection';
 import { FooterCompliance } from './components/FooterCompliance';
 import { GamePlayerState, TelemetryRow } from './types/telemetry';
-import {
-  downloadOfflinePcBundle,
-  parseTelemetryCsv,
-} from './utils/csvTelemetry';
-
+import { parseTelemetryCsv } from './utils/csvTelemetry';
 export default function App() {
   const [rawCsv, setRawCsv] = useState<string>('');
   const [rows, setRows] = useState<TelemetryRow[]>([]);
@@ -119,9 +115,13 @@ export default function App() {
     [handleSelectSol]
   );
 
-  const handleDownloadPc = useCallback(async () => {
-    await downloadOfflinePcBundle(rawCsv);
-  }, [rawCsv]);
+  const handleDownloadPc = useCallback(() => {
+  window.open(
+    'https://github.com/AREON-STUDIO/AREON/releases/download/v1.0/Builds.zip',
+    '_blank',
+    'noopener,noreferrer'
+  );
+}, []);
 
   const handleCompleteLoading = useCallback(() => {
     setPlayerState('active');
