@@ -13,7 +13,7 @@ interface GamePlayerSectionProps {
 }
 
 const GAME_EMBED_URL =
-  'https://itch.io/embed-upload/5380579';
+  'https://itch.io/embed-upload/20583875?color=333333';
 
 export const GamePlayerSection: React.FC<GamePlayerSectionProps> = ({
   playerState,
@@ -90,14 +90,14 @@ export const GamePlayerSection: React.FC<GamePlayerSectionProps> = ({
               </div>
             ) : (
               <iframe
-                key={iframeKey}
-                src={`${GAME_EMBED_URL}?color=111622`}
-                title="AREON - Surviving Mars Unity Game"
-                className="absolute inset-0 h-full w-full border-0"
-                allow="fullscreen; autoplay; gamepad"
-                allowFullScreen
-                loading="lazy"
-              />
+  key={iframeKey}
+  src={GAME_EMBED_URL}
+  title="AREON - Surviving Mars"
+  className="absolute inset-0 h-full w-full border-0"
+  allow="fullscreen; autoplay; gamepad"
+  allowFullScreen
+  loading="lazy"
+/>
             )}
           </div>
 
