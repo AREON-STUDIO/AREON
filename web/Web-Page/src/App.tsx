@@ -97,11 +97,10 @@ export default function App() {
   }, []);
 
 const handlePlayInBrowser = useCallback(() => {
-  const el = document.getElementById('game-player');
-
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+  document.getElementById('game-player')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  });
 
   setPlayerState('active');
 }, []);
