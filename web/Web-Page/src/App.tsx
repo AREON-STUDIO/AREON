@@ -96,12 +96,14 @@ export default function App() {
     }
   }, []);
 
- const handlePlayInBrowser = useCallback(() => {
-  window.open(
-    'https://unmesh-singha.itch.io/areon-surviving-mars',
-    '_blank',
-    'noopener,noreferrer'
-  );
+const handlePlayInBrowser = useCallback(() => {
+  const el = document.getElementById('game-player');
+
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  setPlayerState('active');
 }, []);
 
   const handleInspectSolFromEducation = useCallback(
