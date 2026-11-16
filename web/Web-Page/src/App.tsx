@@ -142,7 +142,7 @@ const handlePlayInBrowser = useCallback(() => {
           playerState={playerState}
           rows={rows}
           selectedSol={selectedSol}
-          onStartRequest={() => setPlayerState('loading')}
+          onStartRequest={() => setPlayerState('active')}
           onReturnStandby={() => setPlayerState('idle')}
           onCompleteLoading={handleCompleteLoading}
         />
